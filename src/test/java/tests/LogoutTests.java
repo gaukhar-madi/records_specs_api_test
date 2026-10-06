@@ -6,6 +6,7 @@ import models.logout.LogoutBodyModel;
 import models.logout.LogoutInvalidTokenResponseModel;
 import org.junit.jupiter.api.Test;
 
+import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
 import static tests.TestData.EMPTY_STRING;
 import static tests.TestData.FIELD_REQUIRED_ERROR;
@@ -19,27 +20,36 @@ public class LogoutTests extends tests.TestBase {
     @Test
     public void successfulLogoutTest() {
         LoginBodyModel loginData = new LoginBodyModel(LOGIN_USERNAME, LOGIN_PASSWORD);
-        String refreshToken = api.auth.loginAndGetRefreshToken(loginData);
+
+        String refreshToken = step("Авторизоваться и получить refresh токен", () ->
+                api.auth.loginAndGetRefreshToken(loginData));
 
         LogoutBodyModel logoutData = new LogoutBodyModel(refreshToken);
-        api.auth.logout(logoutData);
+
+        step("Выполнить logout с валидным refresh токеном", () -> api.auth.logout(logoutData));
     }
 
     @Test
     public void logoutWithInvalidRefreshTokenTest() {
         LogoutBodyModel logoutData = new LogoutBodyModel(INVALID_REFRESH_TOKEN);
 
-        LogoutInvalidTokenResponseModel logoutResponse = api.auth.logoutInvalidToken(logoutData);
+        LogoutInvalidTokenResponseModel logoutResponse = step(
+                "Выполнить logout с недействительным refresh токеном",
+                () -> api.auth.logoutInvalidToken(logoutData));
 
-        assertThat(logoutResponse.detail()).isEqualTo(INVALID_TOKEN_ERROR);
+        step("Проверить сообщение об ошибке невалидного токена", () ->
+                assertThat(logoutResponse.detail()).isEqualTo(INVALID_TOKEN_ERROR));
     }
 
     @Test
     public void logoutWithEmptyRefreshTokenTest() {
         LogoutBodyModel logoutData = new LogoutBodyModel(EMPTY_STRING);
 
-        LogoutBlankFieldsResponseModel logoutResponse = api.auth.logoutBlankFields(logoutData);
+        LogoutBlankFieldsResponseModel logoutResponse = step(
+                "Выполнить logout с пустым refresh токеном",
+                () -> api.auth.logoutBlankFields(logoutData));
 
-        assertThat(logoutResponse.refresh()).contains(FIELD_REQUIRED_ERROR);
+        step("Проверить сообщение об ошибке валидации поля refresh", () ->
+                assertThat(logoutResponse.refresh()).contains(FIELD_REQUIRED_ERROR));
     }
 }
