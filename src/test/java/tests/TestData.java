@@ -29,4 +29,15 @@ public class TestData {
 
     public static final String LOGIN_WRONG_CREDENTIALS_ERROR = "Invalid username or password.";
     public static final String REGISTRATION_EXISTING_USER_ERROR = "A user with that username already exists.";
+
+    public static final String NEW_CLUB_BOOK_TITLE = "The Hitchhiker's Guide to the Galaxy";
+    public static final String NEW_CLUB_BOOK_AUTHORS = "Douglas Adams";
+    public static final Integer NEW_CLUB_PUBLICATION_YEAR = 1979;
+    public static final String NEW_CLUB_DESCRIPTION = "Клуб любителей автостопом по галактике";
+    public static final String NEW_CLUB_TELEGRAM_CHAT_LINK = "https://t.me/hitchhikers_guide";
+
+    public static final String UPDATED_CLUB_BOOK_TITLE = "The Restaurant at the End of the Universe";
+    public static final String UPDATED_CLUB_DESCRIPTION = "Обновлённое описание клуба";
+
+    public static final int CLUB_NOT_FOUND_STATUS_CODE = 404;
 }

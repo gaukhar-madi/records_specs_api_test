@@ -23,4 +23,25 @@ public class ClubsSpec {
             .expectBody("count", greaterThanOrEqualTo(0))
             .expectBody("results", notNullValue())
             .build();
+
+    public static ResponseSpecification successfulClubCreateResponseSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(201)
+            .expectBody(matchesJsonSchemaInClasspath(
+                    "schemas/clubs/club_response_schema.json"))
+            .expectBody("id", notNullValue())
+            .build();
+
+    public static ResponseSpecification successfulClubResponseSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(200)
+            .expectBody(matchesJsonSchemaInClasspath(
+                    "schemas/clubs/club_response_schema.json"))
+            .expectBody("id", notNullValue())
+            .build();
+
+    public static ResponseSpecification successfulClubDeleteResponseSpec = new ResponseSpecBuilder()
+            .log(ALL)
+            .expectStatusCode(204)
+            .build();
 }
