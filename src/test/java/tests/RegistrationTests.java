@@ -30,8 +30,7 @@ public class RegistrationTests extends tests.TestBase {
     public void successfulRegistrationTest() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
 
-        SuccessfulRegistrationResponseModel registrationResponse =
-                step("Зарегистрировать нового пользователя", () -> api.users.register(registrationData));
+        SuccessfulRegistrationResponseModel registrationResponse = api.users.register(registrationData);
 
         step("Проверить данные нового пользователя в ответе", () -> {
             assertThat(registrationResponse.id()).isGreaterThan(0);
@@ -47,15 +46,12 @@ public class RegistrationTests extends tests.TestBase {
     public void existingUserWrongRegistrationTest() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(username, password);
 
-        SuccessfulRegistrationResponseModel firstRegistrationResponse =
-                step("Зарегистрировать пользователя первый раз", () -> api.users.register(registrationData));
+        SuccessfulRegistrationResponseModel firstRegistrationResponse = api.users.register(registrationData);
 
         step("Проверить, что пользователь зарегистрирован с ожидаемым username", () ->
                 assertThat(firstRegistrationResponse.username()).isEqualTo(username));
 
-        ExistingUserResponseModel secondRegistrationResponse = step(
-                "Повторно зарегистрировать пользователя с теми же данными",
-                () -> api.users.registerExistingUser(registrationData));
+        ExistingUserResponseModel secondRegistrationResponse = api.users.registerExistingUser(registrationData);
 
         step("Проверить сообщение об ошибке существующего пользователя", () -> {
             String actualError = secondRegistrationResponse.username().get(0);
@@ -67,9 +63,7 @@ public class RegistrationTests extends tests.TestBase {
     public void registrationWithEmptyUsernameTest() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(EMPTY_STRING, password);
 
-        RegistrationBlankFieldsResponseModel registrationResponse = step(
-                "Зарегистрировать пользователя с пустым username",
-                () -> api.users.registerBlankFields(registrationData));
+        RegistrationBlankFieldsResponseModel registrationResponse = api.users.registerBlankFields(registrationData);
 
         step("Проверить сообщение об ошибке валидации поля username", () ->
                 assertThat(registrationResponse.username()).contains(FIELD_REQUIRED_ERROR));
@@ -79,9 +73,7 @@ public class RegistrationTests extends tests.TestBase {
     public void registrationWithEmptyPasswordTest() {
         RegistrationBodyModel registrationData = new RegistrationBodyModel(username, EMPTY_STRING);
 
-        RegistrationBlankFieldsResponseModel registrationResponse = step(
-                "Зарегистрировать пользователя с пустым password",
-                () -> api.users.registerBlankFields(registrationData));
+        RegistrationBlankFieldsResponseModel registrationResponse = api.users.registerBlankFields(registrationData);
 
         step("Проверить сообщение об ошибке валидации поля password", () ->
                 assertThat(registrationResponse.password()).contains(FIELD_REQUIRED_ERROR));

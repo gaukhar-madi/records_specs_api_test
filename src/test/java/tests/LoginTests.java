@@ -16,8 +16,7 @@ public class LoginTests extends tests.TestBase {
     public void successfulLoginTest() {
         LoginBodyModel loginData = new LoginBodyModel(LOGIN_USERNAME, LOGIN_PASSWORD);
 
-        SuccessfulLoginResponseModel loginResponse = step("Авторизоваться с валидными логином и паролем", () ->
-                api.auth.login(loginData));
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
 
         step("Проверить, что access и refresh токены получены и различаются", () -> {
             String actualAccess = loginResponse.access();
@@ -32,8 +31,7 @@ public class LoginTests extends tests.TestBase {
     public void wrongCredentialsLoginTest() {
         LoginBodyModel loginData = new LoginBodyModel(LOGIN_USERNAME, LOGIN_WRONG_PASSWORD);
 
-        WrongCredentialsLoginResponseModel loginResponse = step("Авторизоваться с неверным паролем", () ->
-                api.auth.loginWrongCredentials(loginData));
+        WrongCredentialsLoginResponseModel loginResponse = api.auth.loginWrongCredentials(loginData);
 
         step("Проверить сообщение об ошибке", () ->
                 assertThat(loginResponse.detail()).isEqualTo(LOGIN_WRONG_CREDENTIALS_ERROR));
@@ -43,8 +41,7 @@ public class LoginTests extends tests.TestBase {
     public void loginWithNonExistentUsernameTest() {
         LoginBodyModel loginData = new LoginBodyModel(LOGIN_WRONG_USERNAME, LOGIN_PASSWORD);
 
-        WrongCredentialsLoginResponseModel loginResponse = step("Авторизоваться с несуществующим логином", () ->
-                api.auth.loginWrongCredentials(loginData));
+        WrongCredentialsLoginResponseModel loginResponse = api.auth.loginWrongCredentials(loginData);
 
         step("Проверить сообщение об ошибке", () ->
                 assertThat(loginResponse.detail()).isEqualTo(LOGIN_WRONG_CREDENTIALS_ERROR));
@@ -54,8 +51,7 @@ public class LoginTests extends tests.TestBase {
     public void loginWithEmptyUsernameTest() {
         LoginBodyModel loginData = new LoginBodyModel(EMPTY_STRING, LOGIN_PASSWORD);
 
-        LoginBlankFieldsResponseModel loginResponse = step("Авторизоваться с пустым логином", () ->
-                api.auth.loginBlankFields(loginData));
+        LoginBlankFieldsResponseModel loginResponse = api.auth.loginBlankFields(loginData);
 
         step("Проверить сообщение об ошибке валидации поля username", () ->
                 assertThat(loginResponse.username()).contains(FIELD_REQUIRED_ERROR));
@@ -65,8 +61,7 @@ public class LoginTests extends tests.TestBase {
     public void loginWithEmptyPasswordTest() {
         LoginBodyModel loginData = new LoginBodyModel(LOGIN_USERNAME, EMPTY_STRING);
 
-        LoginBlankFieldsResponseModel loginResponse = step("Авторизоваться с пустым паролем", () ->
-                api.auth.loginBlankFields(loginData));
+        LoginBlankFieldsResponseModel loginResponse = api.auth.loginBlankFields(loginData);
 
         step("Проверить сообщение об ошибке валидации поля password", () ->
                 assertThat(loginResponse.password()).contains(FIELD_REQUIRED_ERROR));

@@ -21,8 +21,7 @@ public class UpdateUserTests extends TestBase {
     public void loginAndGetAccessToken() {
         LoginBodyModel loginData = new LoginBodyModel(LOGIN_USERNAME, LOGIN_PASSWORD);
 
-        SuccessfulLoginResponseModel loginResponse = step("Авторизоваться и получить access токен", () ->
-                api.auth.login(loginData));
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
 
         accessToken = loginResponse.access();
     }
@@ -32,9 +31,7 @@ public class UpdateUserTests extends TestBase {
         UpdateUserBodyModel updateData =
                 new UpdateUserBodyModel(LOGIN_USERNAME, UPDATED_FIRST_NAME, UPDATED_LAST_NAME, UPDATED_EMAIL);
 
-        UpdateUserResponseModel updateResponse = step(
-                "Обновить профиль пользователя через PUT со всеми полями",
-                () -> api.users.updateUserPut(accessToken, updateData));
+        UpdateUserResponseModel updateResponse = api.users.updateUserPut(accessToken, updateData);
 
         step("Проверить, что username, имя, фамилия и email обновились", () -> {
             assertThat(updateResponse.username()).isEqualTo(LOGIN_USERNAME);
@@ -49,9 +46,7 @@ public class UpdateUserTests extends TestBase {
         UpdateUserBodyModel updateData =
                 new UpdateUserBodyModel(null, UPDATED_FIRST_NAME, null, null);
 
-        UpdateUserResponseModel updateResponse = step(
-                "Обновить только имя пользователя через PATCH",
-                () -> api.users.updateUserPatch(accessToken, updateData));
+        UpdateUserResponseModel updateResponse = api.users.updateUserPatch(accessToken, updateData);
 
         step("Проверить, что имя обновилось", () ->
                 assertThat(updateResponse.firstName()).isEqualTo(UPDATED_FIRST_NAME));
@@ -62,9 +57,7 @@ public class UpdateUserTests extends TestBase {
         UpdateUserBodyModel updateData =
                 new UpdateUserBodyModel(LOGIN_USERNAME, null, UPDATED_LAST_NAME, UPDATED_EMAIL);
 
-        UpdateUserFieldErrorResponseModel updateResponse = step(
-                "Отправить PUT без обязательного поля firstName",
-                () -> api.users.updateUserPutFieldError(accessToken, updateData));
+        UpdateUserFieldErrorResponseModel updateResponse = api.users.updateUserPutFieldError(accessToken, updateData);
 
         step("Проверить сообщение об ошибке отсутствующего поля firstName", () ->
                 assertThat(updateResponse.firstName()).contains(FIELD_IS_REQUIRED_ERROR));
@@ -75,9 +68,7 @@ public class UpdateUserTests extends TestBase {
         UpdateUserBodyModel updateData =
                 new UpdateUserBodyModel(null, null, null, INVALID_EMAIL);
 
-        UpdateUserFieldErrorResponseModel updateResponse = step(
-                "Отправить PATCH с некорректным email",
-                () -> api.users.updateUserPatchFieldError(accessToken, updateData));
+        UpdateUserFieldErrorResponseModel updateResponse = api.users.updateUserPatchFieldError(accessToken, updateData);
 
         step("Проверить сообщение об ошибке валидации email", () ->
                 assertThat(updateResponse.email()).contains(INVALID_EMAIL_ERROR));
@@ -88,9 +79,7 @@ public class UpdateUserTests extends TestBase {
         UpdateUserBodyModel updateData =
                 new UpdateUserBodyModel(null, UPDATED_FIRST_NAME, UPDATED_LAST_NAME, UPDATED_EMAIL);
 
-        UnauthorizedResponseModel updateResponse = step(
-                "Отправить PATCH без заголовка Authorization",
-                () -> api.users.updateUserPatchWithoutAuth(updateData));
+        UnauthorizedResponseModel updateResponse = api.users.updateUserPatchWithoutAuth(updateData);
 
         step("Проверить сообщение об ошибке авторизации", () ->
                 assertThat(updateResponse.detail()).isEqualTo(UNAUTHORIZED_ERROR));

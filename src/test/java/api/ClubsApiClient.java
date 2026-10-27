@@ -5,7 +5,6 @@ import models.clubs.ClubBodyModel;
 import models.clubs.ClubModel;
 import models.clubs.ClubsListResponseModel;
 
-import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static specs.clubs.ClubsSpec.clubsRequestSpec;
 import static specs.clubs.ClubsSpec.successfulClubCreateResponseSpec;
@@ -26,61 +25,60 @@ public class ClubsApiClient {
                 .as(ClubsListResponseModel.class);
     }
 
+    @Step("Создание клуба POST /clubs/")
     public ClubModel createClub(String accessToken, ClubBodyModel body) {
-        return step("Создание клуба POST /clubs/", () ->
-                given(clubsRequestSpec)
-                        .auth().oauth2(accessToken)
-                        .body(body)
-                        .when()
-                        .post("/clubs/")
-                        .then()
-                        .spec(successfulClubCreateResponseSpec)
-                        .extract()
-                        .as(ClubModel.class));
+        return given(clubsRequestSpec)
+                .auth().oauth2(accessToken)
+                .body(body)
+                .when()
+                .post("/clubs/")
+                .then()
+                .spec(successfulClubCreateResponseSpec)
+                .extract()
+                .as(ClubModel.class);
     }
 
+    @Step("Получение клуба по id GET /clubs/{clubId}/")
     public ClubModel getClubById(Integer clubId) {
-        return step("Получение клуба по id GET /clubs/{id}/", () ->
-                given(clubsRequestSpec)
-                        .when()
-                        .get("/clubs/{id}/", clubId)
-                        .then()
-                        .spec(successfulClubResponseSpec)
-                        .extract()
-                        .as(ClubModel.class));
+        return given(clubsRequestSpec)
+                .when()
+                .get("/clubs/{id}/", clubId)
+                .then()
+                .spec(successfulClubResponseSpec)
+                .extract()
+                .as(ClubModel.class);
     }
 
+    @Step("Запрос клуба по id для получения статус-кода GET /clubs/{clubId}/")
     public int getClubStatusCode(Integer clubId) {
-        return step("Запрос клуба по id для проверки статус-кода GET /clubs/{id}/", () ->
-                given(clubsRequestSpec)
-                        .when()
-                        .get("/clubs/{id}/", clubId)
-                        .then()
-                        .extract()
-                        .statusCode());
+        return given(clubsRequestSpec)
+                .when()
+                .get("/clubs/{id}/", clubId)
+                .then()
+                .extract()
+                .statusCode();
     }
 
+    @Step("Обновление клуба PUT /clubs/{clubId}/")
     public ClubModel updateClubPut(String accessToken, Integer clubId, ClubBodyModel body) {
-        return step("Обновление клуба через PUT /clubs/{id}/", () ->
-                given(clubsRequestSpec)
-                        .auth().oauth2(accessToken)
-                        .body(body)
-                        .when()
-                        .put("/clubs/{id}/", clubId)
-                        .then()
-                        .spec(successfulClubResponseSpec)
-                        .extract()
-                        .as(ClubModel.class));
+        return given(clubsRequestSpec)
+                .auth().oauth2(accessToken)
+                .body(body)
+                .when()
+                .put("/clubs/{id}/", clubId)
+                .then()
+                .spec(successfulClubResponseSpec)
+                .extract()
+                .as(ClubModel.class);
     }
 
+    @Step("Удаление клуба DELETE /clubs/{clubId}/")
     public void deleteClub(String accessToken, Integer clubId) {
-        step("Удаление клуба DELETE /clubs/{id}/", () -> {
-            given(clubsRequestSpec)
-                    .auth().oauth2(accessToken)
-                    .when()
-                    .delete("/clubs/{id}/", clubId)
-                    .then()
-                    .spec(successfulClubDeleteResponseSpec);
-        });
+        given(clubsRequestSpec)
+                .auth().oauth2(accessToken)
+                .when()
+                .delete("/clubs/{id}/", clubId)
+                .then()
+                .spec(successfulClubDeleteResponseSpec);
     }
 }

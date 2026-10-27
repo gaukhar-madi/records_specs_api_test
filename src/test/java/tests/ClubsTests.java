@@ -24,8 +24,7 @@ public class ClubsTests extends TestBase {
     public void loginAndGetAccessToken() {
         LoginBodyModel loginData = new LoginBodyModel(LOGIN_USERNAME, LOGIN_PASSWORD);
 
-        SuccessfulLoginResponseModel loginResponse = step("Авторизоваться и получить access токен", () ->
-                api.auth.login(loginData));
+        SuccessfulLoginResponseModel loginResponse = api.auth.login(loginData);
 
         accessToken = loginResponse.access();
     }
@@ -40,8 +39,7 @@ public class ClubsTests extends TestBase {
                 NEW_CLUB_DESCRIPTION,
                 NEW_CLUB_TELEGRAM_CHAT_LINK);
 
-        ClubModel createdClub = step("Создать клуб через POST /clubs/", () ->
-                api.clubs.createClub(accessToken, clubData));
+        ClubModel createdClub = api.clubs.createClub(accessToken, clubData);
 
         step("Проверить, что данные созданного клуба совпадают с отправленными", () -> {
             assertThat(createdClub.id()).isNotNull();
@@ -52,7 +50,7 @@ public class ClubsTests extends TestBase {
             assertThat(createdClub.telegramChatLink()).isEqualTo(NEW_CLUB_TELEGRAM_CHAT_LINK);
         });
 
-        step("Удалить созданный клуб", () -> api.clubs.deleteClub(accessToken, createdClub.id()));
+        api.clubs.deleteClub(accessToken, createdClub.id());
     }
 
     @Test
@@ -65,11 +63,9 @@ public class ClubsTests extends TestBase {
                 NEW_CLUB_DESCRIPTION,
                 NEW_CLUB_TELEGRAM_CHAT_LINK);
 
-        ClubModel createdClub = step("Создать клуб для теста получения", () ->
-                api.clubs.createClub(accessToken, clubData));
+        ClubModel createdClub = api.clubs.createClub(accessToken, clubData);
 
-        ClubModel fetchedClub = step("Получить клуб по id через GET /clubs/{id}/", () ->
-                api.clubs.getClubById(createdClub.id()));
+        ClubModel fetchedClub = api.clubs.getClubById(createdClub.id());
 
         step("Проверить, что полученные данные совпадают с созданным клубом", () -> {
             assertThat(fetchedClub.id()).isEqualTo(createdClub.id());
@@ -80,7 +76,7 @@ public class ClubsTests extends TestBase {
             assertThat(fetchedClub.telegramChatLink()).isEqualTo(NEW_CLUB_TELEGRAM_CHAT_LINK);
         });
 
-        step("Удалить созданный клуб", () -> api.clubs.deleteClub(accessToken, createdClub.id()));
+        api.clubs.deleteClub(accessToken, createdClub.id());
     }
 
     @Test
@@ -93,8 +89,7 @@ public class ClubsTests extends TestBase {
                 NEW_CLUB_DESCRIPTION,
                 NEW_CLUB_TELEGRAM_CHAT_LINK);
 
-        ClubModel createdClub = step("Создать клуб для теста обновления", () ->
-                api.clubs.createClub(accessToken, clubData));
+        ClubModel createdClub = api.clubs.createClub(accessToken, clubData);
 
         ClubBodyModel updateData = new ClubBodyModel(
                 UPDATED_CLUB_BOOK_TITLE,
@@ -103,8 +98,7 @@ public class ClubsTests extends TestBase {
                 UPDATED_CLUB_DESCRIPTION,
                 NEW_CLUB_TELEGRAM_CHAT_LINK);
 
-        ClubModel updatedClub = step("Обновить клуб через PUT /clubs/{id}/", () ->
-                api.clubs.updateClubPut(accessToken, createdClub.id(), updateData));
+        ClubModel updatedClub = api.clubs.updateClubPut(accessToken, createdClub.id(), updateData);
 
         step("Проверить, что название книги и описание клуба обновились", () -> {
             assertThat(updatedClub.id()).isEqualTo(createdClub.id());
@@ -112,7 +106,7 @@ public class ClubsTests extends TestBase {
             assertThat(updatedClub.description()).isEqualTo(UPDATED_CLUB_DESCRIPTION);
         });
 
-        step("Удалить созданный клуб", () -> api.clubs.deleteClub(accessToken, createdClub.id()));
+        api.clubs.deleteClub(accessToken, createdClub.id());
     }
 
     @Test
@@ -125,15 +119,13 @@ public class ClubsTests extends TestBase {
                 NEW_CLUB_DESCRIPTION,
                 NEW_CLUB_TELEGRAM_CHAT_LINK);
 
-        ClubModel createdClub = step("Создать клуб для теста удаления", () ->
-                api.clubs.createClub(accessToken, clubData));
+        ClubModel createdClub = api.clubs.createClub(accessToken, clubData);
 
-        step("Удалить клуб через DELETE /clubs/{id}/", () ->
-                api.clubs.deleteClub(accessToken, createdClub.id()));
+        api.clubs.deleteClub(accessToken, createdClub.id());
 
-        step("Проверить, что клуб больше не найден после удаления", () -> {
-            int statusCode = api.clubs.getClubStatusCode(createdClub.id());
-            assertThat(statusCode).isEqualTo(CLUB_NOT_FOUND_STATUS_CODE);
-        });
+        int statusCode = api.clubs.getClubStatusCode(createdClub.id());
+
+        step("Проверить, что клуб больше не найден после удаления", () ->
+                assertThat(statusCode).isEqualTo(CLUB_NOT_FOUND_STATUS_CODE));
     }
 }
