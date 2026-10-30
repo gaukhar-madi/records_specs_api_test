@@ -1,6 +1,5 @@
 build/
 out/
-gradle/
 !**/src/test/**
 
 ### IntelliJ IDEA ###
@@ -10,7 +9,10 @@ gradle/
 *.ipr
 
 ### Gradle ###
-.gradle/
+gradle/*
+!gradle/wrapper/
+!gradle/wrapper/gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.propertiesstop
 
 ### Logs ###
 *.log
