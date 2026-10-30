@@ -1,4 +1,4 @@
-package tests;
+package test_base;
 
 import api.ApiClient;
 import io.restassured.RestAssured;

@@ -1,4 +1,4 @@
-package tests;
+package test_data;
 
 public class TestData {
 
@@ -40,4 +40,8 @@ public class TestData {
     public static final String UPDATED_CLUB_DESCRIPTION = "Обновлённое описание клуба";
 
     public static final int CLUB_NOT_FOUND_STATUS_CODE = 404;
+
+    public static final String FORBIDDEN_ERROR = "You do not have permission to perform this action.";
+    public static final String INVALID_ACCESS_TOKEN = "invalid_access_token_12345";
+    public static final String INVALID_ACCESS_TOKEN_ERROR = "Given token not valid for any token type";
 }

@@ -1,4 +1,4 @@
-package tests;
+package tests.clubs;
 
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -9,10 +9,11 @@ import models.login.SuccessfulLoginResponseModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import test_base.TestBase;
 
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
-import static tests.TestData.*;
+import static test_data.TestData.*;
 
 @Feature("Клубы")
 @Story("CRUD /api/v1/clubs/")

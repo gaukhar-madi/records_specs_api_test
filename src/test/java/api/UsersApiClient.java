@@ -16,6 +16,7 @@ import static specs.registration.RegistrationSpec.existingUserRegistrationRespon
 import static specs.registration.RegistrationSpec.registrationRequestSpec;
 import static specs.registration.RegistrationSpec.successfulRegistrationResponseSpec;
 import static specs.user.UpdateUserSpec.fieldErrorUpdateUserResponseSpec;
+import static specs.user.UpdateUserSpec.successfulGetUserResponseSpec;
 import static specs.user.UpdateUserSpec.successfulUpdateUserResponseSpec;
 import static specs.user.UpdateUserSpec.unauthorizedUpdateUserResponseSpec;
 import static specs.user.UpdateUserSpec.updateUserRequestSpec;
@@ -56,6 +57,18 @@ public class UsersApiClient {
                 .spec(blankFieldsRegistrationResponseSpec)
                 .extract()
                 .as(RegistrationBlankFieldsResponseModel.class);
+    }
+
+    @Step("Получение профиля текущего пользователя GET /users/me/")
+    public UpdateUserResponseModel getCurrentUser(String accessToken) {
+        return given(updateUserRequestSpec)
+                .auth().oauth2(accessToken)
+                .when()
+                .get("/users/me/")
+                .then()
+                .spec(successfulGetUserResponseSpec)
+                .extract()
+                .as(UpdateUserResponseModel.class);
     }
 
     @Step("Обновление профиля пользователя PUT /users/me/")

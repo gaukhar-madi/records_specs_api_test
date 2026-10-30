@@ -1,16 +1,17 @@
-package tests;
+package tests.user;
 
 import models.login.LoginBlankFieldsResponseModel;
 import models.login.LoginBodyModel;
 import models.login.SuccessfulLoginResponseModel;
 import models.login.WrongCredentialsLoginResponseModel;
 import org.junit.jupiter.api.Test;
+import test_base.TestBase;
 
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
-import static tests.TestData.*;
+import static test_data.TestData.*;
 
-public class LoginTests extends tests.TestBase {
+public class  LoginTests extends TestBase {
 
     @Test
     public void successfulLoginTest() {

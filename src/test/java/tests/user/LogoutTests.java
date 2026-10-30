@@ -1,21 +1,22 @@
-package tests;
+package tests.user;
 
 import models.login.LoginBodyModel;
 import models.logout.LogoutBlankFieldsResponseModel;
 import models.logout.LogoutBodyModel;
 import models.logout.LogoutInvalidTokenResponseModel;
 import org.junit.jupiter.api.Test;
+import test_base.TestBase;
 
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
-import static tests.TestData.EMPTY_STRING;
-import static tests.TestData.FIELD_REQUIRED_ERROR;
-import static tests.TestData.INVALID_REFRESH_TOKEN;
-import static tests.TestData.INVALID_TOKEN_ERROR;
-import static tests.TestData.LOGIN_PASSWORD;
-import static tests.TestData.LOGIN_USERNAME;
+import static test_data.TestData.EMPTY_STRING;
+import static test_data.TestData.FIELD_REQUIRED_ERROR;
+import static test_data.TestData.INVALID_REFRESH_TOKEN;
+import static test_data.TestData.INVALID_TOKEN_ERROR;
+import static test_data.TestData.LOGIN_PASSWORD;
+import static test_data.TestData.LOGIN_USERNAME;
 
-public class LogoutTests extends tests.TestBase {
+public class LogoutTests extends TestBase {
 
     @Test
     public void successfulLogoutTest() {

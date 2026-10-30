@@ -1,4 +1,4 @@
-package tests;
+package tests.user;
 
 import models.registration.ExistingUserResponseModel;
 import models.registration.RegistrationBlankFieldsResponseModel;
@@ -6,15 +6,16 @@ import models.registration.RegistrationBodyModel;
 import models.registration.SuccessfulRegistrationResponseModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import test_base.TestBase;
 
 import static io.qameta.allure.Allure.step;
 import static org.assertj.core.api.Assertions.assertThat;
-import static tests.TestData.EMPTY_STRING;
-import static tests.TestData.FIELD_REQUIRED_ERROR;
-import static tests.TestData.REGISTRATION_EXISTING_USER_ERROR;
-import static tests.TestData.REGISTRATION_IP_REGEXP;
+import static test_data.TestData.EMPTY_STRING;
+import static test_data.TestData.FIELD_REQUIRED_ERROR;
+import static test_data.TestData.REGISTRATION_EXISTING_USER_ERROR;
+import static test_data.TestData.REGISTRATION_IP_REGEXP;
 
-public class RegistrationTests extends tests.TestBase {
+public class RegistrationTests extends TestBase {
 
     String username;
     String password;
